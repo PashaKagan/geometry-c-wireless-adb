@@ -1,0 +1,41 @@
+name: Package Stick Builder
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'tools/win-stick-builder/**'
+      - '.github/workflows/stick-builder.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Zip the tool (tracked files only; no binaries/APKs)
+        run: |
+          cd tools
+          zip -r ../GeelyStickBuilder.zip win-stick-builder -x 'win-stick-builder/assets/.gitignore'
+          cd ..
+          unzip -l GeelyStickBuilder.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GeelyStickBuilder
+          path: GeelyStickBuilder.zip
+          if-no-files-found: error
+
+      - name: Publish to Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: stick-builder
+          name: Stick Builder (Windows)
+          body: "Geely Stick Builder (Windows GUI): detect USB, format FAT32, write a boot-hook stick from the ticked features. Unzip and run Run-GeelyStickBuilder.cmd. Drop your own compiled kit binaries into assets\\ to enable the root/Settings toggles (none are bundled)."
+          files: GeelyStickBuilder.zip
