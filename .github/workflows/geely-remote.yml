@@ -1,0 +1,51 @@
+name: Build Geely Remote APK
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'android/geely-remote/**'
+      - '.github/workflows/geely-remote.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.7'
+
+      - name: Build debug APK
+        run: gradle -p android/geely-remote :app:assembleDebug --no-daemon --stacktrace
+
+      - name: Name the APK
+        run: cp android/geely-remote/app/build/outputs/apk/debug/app-debug.apk geely-remote.apk
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: geely-remote-debug
+          path: geely-remote.apk
+          if-no-files-found: error
+
+      - name: Publish to Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest build
+          body: "Geely Remote — phone app for the Geely Geometry C head unit (controls it over wireless ADB). Debug build, signed with the committed stable key so it updates in place. Sideload with: adb install -r geely-remote.apk"
+          files: geely-remote.apk

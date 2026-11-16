@@ -1,0 +1,7 @@
+# build output / local config — the committed geely.keystore is intentional, keep it
+.gradle/
+build/
+app/build/
+local.properties
+*.iml
+.idea/
