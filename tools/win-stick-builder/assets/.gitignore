@@ -1,0 +1,7 @@
+# Never commit binaries or APKs here — this folder holds YOUR OWN kit locally.
+# The two reference shell scripts and this note are the only tracked files.
+*
+!.gitignore
+!README.md
+!steering.sh
+!rootadb.sh

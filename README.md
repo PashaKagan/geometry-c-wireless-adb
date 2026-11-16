@@ -52,8 +52,19 @@ numbers as *this build's*, and verify before relying on them.
 5. **[Partitions & backup](docs/05-partitions-and-backup.md)** — full partition map and a read-only `dd` backup you run from the hook.
 6. **[DVR / dashcam footage](docs/06-dvr.md)** — why the clips aren't on the Android side, and the only real ways to get them.
 7. **[Community tweaks](docs/07-community-tweaks.md)** — Settings shortcut, engineering-menu audio warning, firmware-swap caveat, OBD2, regen macro.
+8. **[Geely Remote phone app](docs/08-geely-remote-app.md)** — the companion Android app that drives the unit over wireless ADB.
+9. **[Recommended apps](docs/09-recommended-apps.md)** — where to get the useful apps (APKPure / Play / source), with Android-5.1 version guidance.
 
-See also **[ROADMAP.md](ROADMAP.md)** — a planned point-and-click USB-stick builder.
+## Tools & apps in this repo
+
+- **[Geely Remote](android/geely-remote/)** — the phone app (source here; APK built by CI to
+  [Releases](../../releases)). Controls the unit over wireless ADB, with a root terminal and
+  diagnostics.
+- **[Windows USB-stick builder](tools/win-stick-builder/)** — a GUI that detects a USB drive, formats
+  it, and writes a boot-hook stick from the features you tick (wireless ADB, root, wheel fix, Settings,
+  animations, backup, …). See also **[ROADMAP.md](ROADMAP.md)**.
+- **Android Auto:** this unit runs **Open Headunit** with the **AAWireless** dongle — see
+  [docs/09](docs/09-recommended-apps.md).
 
 ---
 
@@ -63,6 +74,8 @@ See also **[ROADMAP.md](ROADMAP.md)** — a planned point-and-click USB-stick bu
 - ✅ **Persistent root** — patched `adbd` (root ADB) + a small `su` daemon, **no boot flash**, survives reboots.
 - ✅ **Steering-wheel media buttons** in projection apps (a daemon re-injects them — see doc 4).
 - ✅ **Full partition backup** (read-only `dd` to the stick), and a confirmed partition map.
+- ✅ **Android Auto** via **Open Headunit + the AAWireless dongle** (works on this unit — see [docs/09](docs/09-recommended-apps.md)).
+- ✅ A **phone app** ([Geely Remote](android/geely-remote/)) to drive the unit over wireless ADB with a root terminal.
 - ✅ Install blocked apps, open the hidden stock **Settings**, trim animations, back up/move files over Wi‑Fi.
 - ❌ **DVR footage** is on the camera module's own card, not the Android filesystem — not reachable in software.
 - ❌ **Vehicle feature toggles** (ADAS/HUD/CarPlay/etc.) are **vehicle-config-gated**, not Android-gated — can't be "unlocked" from the head unit.
