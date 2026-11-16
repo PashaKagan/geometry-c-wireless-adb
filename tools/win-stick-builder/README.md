@@ -14,8 +14,9 @@ Grab the packaged zip from the repo's Releases (built by CI, no binaries bundled
 
 ## Run it
 
-1. Put your own kit files in [`assets/`](assets/) (see that folder's README — binaries/APKs are
-   never in this repo; you supply them). Toggles whose asset is missing stay greyed out.
+1. The author's kit (scripts + self-compiled binaries) is bundled in [`assets/`](assets/); only
+   third-party APKs (e.g. `Settings_1.0.apk`) are left out — add those yourself. Toggles whose asset
+   is missing stay greyed out. Note `adbd_root` is **build-specific** (see `../../docs/03-rooting.md`).
 2. Double-click **`Run-GeelyStickBuilder.cmd`** — it elevates (formatting needs admin) and bypasses
    execution policy for just this script.
 3. Pick the USB drive, tick features, **Format + Build Stick**.

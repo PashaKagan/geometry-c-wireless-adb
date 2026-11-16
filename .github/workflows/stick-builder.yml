@@ -18,7 +18,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Zip the tool (tracked files only; no binaries/APKs)
+      - name: Zip the tool (tracked files: scripts + author's binaries; no third-party APKs)
         run: |
           cd tools
           zip -r ../GeelyStickBuilder.zip win-stick-builder -x 'win-stick-builder/assets/.gitignore'
@@ -37,5 +37,5 @@ jobs:
         with:
           tag_name: stick-builder
           name: Stick Builder (Windows)
-          body: "Geely Stick Builder (Windows GUI): detect USB, format FAT32, write a boot-hook stick from the ticked features. Unzip and run Run-GeelyStickBuilder.cmd. Drop your own compiled kit binaries into assets\\ to enable the root/Settings toggles (none are bundled)."
+          body: "Geely Stick Builder (Windows GUI): detect USB, format FAT32, write a boot-hook stick from the ticked features. Unzip and run Run-GeelyStickBuilder.cmd. Bundles the author's own kit (scripts + binaries); adbd_root is build-specific (see docs/03). Only third-party APKs (e.g. Settings) are left out — add your own."
           files: GeelyStickBuilder.zip

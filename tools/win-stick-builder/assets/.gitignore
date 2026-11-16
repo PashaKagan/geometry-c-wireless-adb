@@ -1,8 +1,4 @@
-# Never commit binaries or APKs here — this folder holds YOUR OWN kit locally.
-# The two reference shell scripts and this note are the only tracked files.
-*
-!.gitignore
-!README.md
-!steering.sh
-!seatfix.sh
-!rootadb.sh
+# This folder holds the author's own kit (shell scripts + self-compiled binaries),
+# which ARE committed. Only third-party APKs are kept out.
+*.apk
+/apps/

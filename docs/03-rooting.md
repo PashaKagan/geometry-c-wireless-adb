@@ -93,9 +93,11 @@ want `su`. Rather than a full SuperSU/Magisk, a minimal **su daemon** is enough:
 
 Confirmed working when a root-capable file manager can browse `/data`.
 
-This is deliberately described at the design level rather than shipped as a binary — build your own
-small daemon or adapt an open one; the important parts are *abstract socket + SO_PEERCRED allow-list
-+ started from `install-recovery.sh`*.
+The compiled `geelysu` and the patched `adbd_root` for **this specific build** are bundled with the
+[Windows stick builder](../tools/win-stick-builder/assets/) for convenience. They are build-specific
+(`adbd_root` especially — see the warning there), so on a different firmware build rebuild them: the
+important parts of the daemon are *abstract socket + SO_PEERCRED allow-list + started from
+`install-recovery.sh`*, and the adbd patch is the 4-byte branch described above.
 
 ---
 
