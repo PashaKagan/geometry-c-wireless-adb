@@ -62,7 +62,7 @@ numbers as *this build's*, and verify before relying on them.
   diagnostics.
 - **[Windows USB-stick builder](tools/win-stick-builder/)** — a GUI that detects a USB drive, formats
   it, and writes a boot-hook stick from the features you tick (wireless ADB, root, wheel fix, Settings,
-  animations, backup, …). **[Download the zip](https://github.com/PashaKagan/geometry-c-wireless-adb/releases/download/stick-builder/GeelyStickBuilder.zip)** (built by CI; no binaries bundled — add your own kit). See also **[ROADMAP.md](ROADMAP.md)**.
+  animations, backup, …). **[Download the zip](https://github.com/PashaKagan/geometry-c-wireless-adb/releases/download/stick-builder/GeelyStickBuilder.zip)** (built by CI; bundles the author's own kit — `adbd_root` is build-specific; only third-party APKs are left out). See also **[ROADMAP.md](ROADMAP.md)**.
 - **Android Auto:** this unit runs **Open Headunit** with the **AAWireless** dongle — see
   [docs/09](docs/09-recommended-apps.md).
 

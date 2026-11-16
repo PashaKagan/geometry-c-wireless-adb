@@ -305,7 +305,7 @@ try {
     $lblAssets = New-Object System.Windows.Forms.Label
     $lblAssets.Location = New-Object System.Drawing.Point(15, 385); $lblAssets.Size = New-Object System.Drawing.Size(570, 34)
     $lblAssets.ForeColor = 'DimGray'
-    $lblAssets.Text = "Assets folder: $AssetsDir`nDrop your compiled adbd_root, geelysu, geelysu.allow (+ Settings_1.0.apk, apps\*.apk) here to enable the greyed-out toggles."
+    $lblAssets.Text = "Assets folder: $AssetsDir`nRoot/wheel/seat assets are bundled. Add Settings_1.0.apk (+ apps\*.apk) here to enable those toggles. adbd_root is build-specific (see docs/03)."
     $form.Controls.Add($lblAssets)
 
     $log = New-Object System.Windows.Forms.TextBox
