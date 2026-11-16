@@ -31,10 +31,10 @@ cd android/geely-remote
 
 - AGP 8.5.2, Kotlin 1.9.24, Gradle 8.7, JDK 17, compileSdk 34, minSdk 26.
 - The debug build is signed with the committed **`app/geely.keystore`** (alias `geely`) so rebuilds
-  update in place instead of forcing an uninstall. **Note:** that keystore + its password are in the
-  source on purpose (reproducible in-place updates for a hobby app) — anyone can therefore sign an
-  update with the same package name. If that matters to you, regenerate the keystore and keep it out
-  of source.
+  update in place instead of forcing an uninstall. The store/key password is a **random string** kept
+  in `app/build.gradle.kts` on purpose (reproducible in-place updates for a hobby app). **Note:** it's
+  still public, so anyone can sign an update with the same package name — if that matters to you,
+  regenerate the keystore and keep it out of source.
 
 ## Layout
 
