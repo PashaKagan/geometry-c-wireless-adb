@@ -20,9 +20,9 @@ android {
     signingConfigs {
         create("stable") {
             storeFile = file("geely.keystore")
-            storePassword = "geely123"
+            storePassword = "d3fec00b2d18568dd200b52419b6b11faa2d"
             keyAlias = "geely"
-            keyPassword = "geely123"
+            keyPassword = "d3fec00b2d18568dd200b52419b6b11faa2d"
         }
     }
 
