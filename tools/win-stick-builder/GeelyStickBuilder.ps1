@@ -40,11 +40,11 @@ function Test-Admin {
 # ---- feature catalogue --------------------------------------------------
 $Features = @(
     [pscustomobject]@{ Key='wadb';   Label='Enable wireless ADB (TCP 5555, persistent)';          Help='Starts adbd on 5555, port persists across cold boot.'; Assets=@() }
-    [pscustomobject]@{ Key='root';   Label='Install persistent root (patched adbd + su daemon)';   Help='Root over wireless ADB and su for allow-listed apps. No boot flash.'; Assets=@('adbd_root','rootadb.sh','geelysu','su','geelysu.allow') }
+    [pscustomobject]@{ Key='root';   Label='Install persistent root (patched adbd + su daemon)';   Help='Root over wireless ADB and su for allow-listed apps. No boot flash. (su is made from geelysu.)'; Assets=@('adbd_root','geelysu','geelysu.allow','rootadb.sh') }
     [pscustomobject]@{ Key='wheel';  Label='Steering-wheel button fix (media next/prev/play)';     Help='Installs the log-tailing daemon and autostarts it.'; Assets=@('steering.sh') }
     [pscustomobject]@{ Key='setapp'; Label='Install Settings shortcut app';                        Help='Adds an icon that opens the full Android Settings.'; Assets=@('Settings_1.0.apk') }
     [pscustomobject]@{ Key='anim';   Label='Set UI animation scale';                               Help='Lighter/snappier UI. Choose the scale on the right.'; Assets=@() }
-    [pscustomobject]@{ Key='seat';   Label='Seat-preset fix';                                      Help='Runs assets\seatfix.sh (you provide the exact command).'; Assets=@('seatfix.sh') }
+    [pscustomobject]@{ Key='seat';   Label='Seat-preset fix (clears vehicle-settings + reboots)';   Help='pm clear com.neusoft.optimus.wheeljack.setting, then reboot (fixes a corrupted seat preset). Reboots the unit.'; Assets=@('seatfix.sh') }
     [pscustomobject]@{ Key='backup'; Label='Read-only partition backup to the stick';              Help='dd of the critical small partitions (never touches resources). Cannot brick.'; Assets=@() }
     [pscustomobject]@{ Key='apps';   Label='Install any extra APKs in assets\apps\';               Help='pm install every *.apk found in assets\apps.'; Assets=@() }
 )
@@ -110,9 +110,9 @@ function Build-DoneSh([hashtable]$sel, [string]$animVal) {
             & $add 'cp "$USB/assets/adbd_root"     /system/bin/adbd_root     && chmod 755 /system/bin/adbd_root'
             & $add 'cp "$USB/assets/rootadb.sh"    /system/bin/rootadb.sh    && chmod 755 /system/bin/rootadb.sh'
             & $add 'cp "$USB/assets/geelysu"       /system/xbin/geelysu      && chmod 755 /system/xbin/geelysu'
-            & $add 'cp "$USB/assets/su"            /system/xbin/su           && chmod 755 /system/xbin/su'
+            & $add 'cp "$USB/assets/geelysu"       /system/xbin/su           && chmod 755 /system/xbin/su'
             & $add 'cp "$USB/assets/geelysu.allow" /system/etc/geelysu.allow && chmod 644 /system/etc/geelysu.allow'
-            & $add 'grep -q rootadb.sh "$IR"         || echo "/system/bin/rootadb.sh &"        >> "$IR"'
+            & $add 'grep -q rootadb.sh "$IR"          || echo "/system/bin/sh /system/bin/rootadb.sh &"  >> "$IR"'
             & $add 'grep -q "geelysu --daemon" "$IR" || echo "/system/xbin/geelysu --daemon &" >> "$IR"'
             & $add 'log "root files installed"'
         }
@@ -135,11 +135,8 @@ function Build-DoneSh([hashtable]$sel, [string]$animVal) {
         & $add 'for a in "$USB"/assets/apps/*.apk; do [ -f "$a" ] && pm install -r "$a" >>"$USB/done.log" 2>&1 && log "installed $a"; done'
     }
 
-    if ($sel['root']) {
-        & $add '/system/bin/rootadb.sh &'
-        & $add '/system/xbin/geelysu --daemon &'
-    }
-    if ($sel['wheel']) { & $add '/system/bin/steering.sh &' }
+    if ($sel['root'])  { & $add '/system/xbin/geelysu --daemon' }
+    if ($sel['wheel']) { & $add '( /system/bin/sh /system/bin/steering.sh now >/dev/null 2>&1 & )' }
 
     if ($sel['wadb']) {
         & $add '# ---------- wireless ADB ----------'
@@ -175,12 +172,16 @@ function Build-DoneSh([hashtable]$sel, [string]$animVal) {
         & $add 'log "backup done -> $OUT"'
     }
 
-    & $add '# ---------- finish (no reboot) ----------'
+    # root ADB last: it restarts adbd (so it must come after wireless-ADB enable)
+    if ($sel['root']) { & $add '/system/bin/sh /system/bin/rootadb.sh now' }
+
+    & $add '# ---------- finish ----------'
     & $add 'sync'
     & $add ('rm -rf "$USB/' + $TrigDir + '"')
-    & $add 'am start -n com.android.settings/.Settings >/dev/null 2>&1'
     & $add 'echo OK > "$USB/DONE.txt"; sync'
     & $add 'log "=== stick build end ==="'
+    if ($sel['seat']) { & $add 'log "seat fix applied - rebooting to apply"; sync; reboot' }
+    else { & $add 'am start -n com.android.settings/.Settings >/dev/null 2>&1' }
 
     return $sb.ToString()
 }
@@ -304,7 +305,7 @@ try {
     $lblAssets = New-Object System.Windows.Forms.Label
     $lblAssets.Location = New-Object System.Drawing.Point(15, 385); $lblAssets.Size = New-Object System.Drawing.Size(570, 34)
     $lblAssets.ForeColor = 'DimGray'
-    $lblAssets.Text = "Assets folder: $AssetsDir`nDrop adbd_root, geelysu, su, geelysu.allow, Settings_1.0.apk, seatfix.sh (and apps\*.apk) there to enable the greyed-out toggles."
+    $lblAssets.Text = "Assets folder: $AssetsDir`nDrop your compiled adbd_root, geelysu, geelysu.allow (+ Settings_1.0.apk, apps\*.apk) here to enable the greyed-out toggles."
     $form.Controls.Add($lblAssets)
 
     $log = New-Object System.Windows.Forms.TextBox
