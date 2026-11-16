@@ -1,28 +1,28 @@
 #!/system/bin/sh
-# Steering-wheel media-button daemon (reference version).
-# Tails the vendor key log and re-injects wheel presses as Android media keys.
-# Installed to /system/bin/steering.sh and autostarted from install-recovery.sh.
-# Kill switch: touch /data/local/tmp/steering.off
-#
-# Keycodes observed on the Geometry C (ECARX E01):
-#   163 -> next (MEDIA_NEXT 87) | 165 -> prev (MEDIA_PREVIOUS 88) | 267 -> play/pause (MEDIA_PLAY_PAUSE 85)
-# If your AA app ignores `input keyevent`, swap the inject line for a media-session
-# dispatch (e.g. `cmd media_session dispatch next`) — capture works regardless.
-
+# steering v2 (Geely Geometry C, Israeli firmware). Maps wheel media keys to Android media keys.
+# Understands: KeyInput "keyCode163action1" (RU/BY firmware) and PopView "keyCode = 163,keyCodeAction = 1".
+# Logs every hard-key line to /data/local/tmp/keys.log. Kill switch: /data/local/tmp/steering.off
+export PATH=/system/bin:/system/xbin:/sbin:/vendor/bin
+BB=/system/bin/busybox
+K=/data/local/tmp/keys.log
+[ "$1" = "now" ] || sleep 20
 [ -f /data/local/tmp/steering.off ] && exit 0
-
-# small settle so the log pipe is ready at boot
-sleep 20
-logcat -c 2>/dev/null
-
-logcat -v brief 2>/dev/null | while read line; do
+echo "$(date) steering v2 started pid $$" >> $K; chmod 644 $K
+/system/bin/logcat -c
+/system/bin/logcat -v time -s KeyInput:* PopView:* | while read line; do
+  case "$line" in *eyCode*) ;; *) continue ;; esac
+  # size cap ~200 KB
+  [ $($BB stat -c %s $K 2>/dev/null || echo 0) -gt 200000 ] && mv -f $K $K.1
+  echo "$line" >> $K
+  [ -f /data/local/tmp/steering.off ] && continue
+  act=""
   case "$line" in
-    *"keyCodeAction = 1"*)
-      case "$line" in
-        *"keyCode = 163"*) input keyevent 87 ;;
-        *"keyCode = 165"*) input keyevent 88 ;;
-        *"keyCode = 267"*) input keyevent 85 ;;
-      esac ;;
+    *"keyCode163action1"*|*"keyCode = 163,keyCodeAction = 1"*|*"keyCode = 163, keyCodeAction = 1"*) act=87 ;;
+    *"keyCode165action1"*|*"keyCode = 165,keyCodeAction = 1"*|*"keyCode = 165, keyCodeAction = 1"*) act=88 ;;
+    *"keyCode267action1"*|*"keyCode = 267,keyCodeAction = 1"*|*"keyCode = 267, keyCodeAction = 1"*) act=85 ;;
+    *"keyCode87action1"*|*"keyCode = 87,keyCodeAction = 1"*)  act=87 ;;
+    *"keyCode88action1"*|*"keyCode = 88,keyCodeAction = 1"*)  act=88 ;;
+    *"keyCode85action1"*|*"keyCode = 85,keyCodeAction = 1"*)  act=85 ;;
   esac
-  [ -f /data/local/tmp/steering.off ] && exit 0
+  if [ -n "$act" ]; then /system/bin/input keyevent $act & echo "  -> injected keyevent $act" >> $K; fi
 done

@@ -7,6 +7,11 @@ instead of hand-assembling scripts.
 > Formatting **erases** the chosen drive. Device-owner tooling, no warranty — read the repo
 > [disclaimer](../../README.md) and [the hook doc](../../docs/02-usb-boot-hook.md) first.
 
+## Download
+
+Grab the packaged zip from the repo's Releases (built by CI, no binaries bundled):
+**https://github.com/PashaKagan/geometry-c-wireless-adb/releases/download/stick-builder/GeelyStickBuilder.zip**
+
 ## Run it
 
 1. Put your own kit files in [`assets/`](assets/) (see that folder's README — binaries/APKs are
