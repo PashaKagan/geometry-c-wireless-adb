@@ -72,7 +72,7 @@ numbers as *this build's*, and verify before relying on them.
 
 - ✅ **Wireless ADB** (shell) over the unit's own USB install hook.
 - ✅ **Persistent root** — patched `adbd` (root ADB) + a small `su` daemon, **no boot flash**, survives reboots.
-- ✅ **Steering-wheel media buttons** in projection apps (a daemon re-injects them — see doc 4).
+- ✅ **Steering-wheel media buttons** in projection apps, with **tap vs hold**: tap = next/prev/play-pause, hold fwd/back = continuous fast-forward/rewind (in apps that honour seek, e.g. VLC/Netflix in AA), hold play = the phone's voice assistant (Gemini) in AA. See [doc 4](docs/04-wheel-buttons.md).
 - ✅ **Full partition backup** (read-only `dd` to the stick), and a confirmed partition map.
 - ✅ **Android Auto** via **Open Headunit + the AAWireless dongle** (works on this unit — see [docs/09](docs/09-recommended-apps.md)).
 - ✅ A **phone app** ([Geely Remote](android/geely-remote/)) to drive the unit over wireless ADB with a root terminal.

@@ -41,10 +41,10 @@ function Test-Admin {
 $Features = @(
     [pscustomobject]@{ Key='wadb';   Label='Enable wireless ADB (TCP 5555, persistent)';          Help='Starts adbd on 5555, port persists across cold boot.'; Assets=@() }
     [pscustomobject]@{ Key='root';   Label='Install persistent root (patched adbd + su daemon)';   Help='Root over wireless ADB and su for allow-listed apps. No boot flash. (su is made from geelysu.)'; Assets=@('adbd_root','geelysu','geelysu.allow','rootadb.sh') }
-    [pscustomobject]@{ Key='wheel';  Label='Steering-wheel button fix (media next/prev/play)';     Help='Installs the log-tailing daemon and autostarts it.'; Assets=@('steering.sh') }
+    [pscustomobject]@{ Key='wheel';  Label='Steering-wheel buttons (tap: next/prev/play, hold: seek + assistant)'; Help='Installs the log-tailing daemon to /system/bin and autostarts it. Tap = next/prev/play-pause; hold fwd/back = continuous fast-forward/rewind (apps that honour media seek, e.g. VLC/Netflix in AA); hold play = phone voice assistant (Gemini) in AA.'; Assets=@('steering.sh') }
     [pscustomobject]@{ Key='setapp'; Label='Install Settings shortcut app';                        Help='Adds an icon that opens the full Android Settings.'; Assets=@('Settings_1.0.apk') }
     [pscustomobject]@{ Key='anim';   Label='Set UI animation scale';                               Help='Lighter/snappier UI. Choose the scale on the right.'; Assets=@() }
-    [pscustomobject]@{ Key='seat';   Label='Seat-preset fix (clears vehicle-settings + reboots)';   Help='pm clear com.neusoft.optimus.wheeljack.setting, then reboot (fixes a corrupted seat preset). Reboots the unit.'; Assets=@('seatfix.sh') }
+    [pscustomobject]@{ Key='seat';   Label='Seat-preset fix (clears vehicle-settings + reboots) - RISKY, UNVERIFIED';   Help='pm clear com.neusoft.optimus.wheeljack.setting, then reboot. May fix a corrupted seat preset - but a community report says it can wipe ALL your user settings, and it is UNVERIFIED. Leave off unless the seat preset is already broken.'; Assets=@('seatfix.sh') }
     [pscustomobject]@{ Key='backup'; Label='Read-only partition backup to the stick';              Help='dd of the critical small partitions (never touches resources). Cannot brick.'; Assets=@() }
     [pscustomobject]@{ Key='apps';   Label='Install any extra APKs in assets\apps\';               Help='pm install every *.apk found in assets\apps.'; Assets=@() }
 )

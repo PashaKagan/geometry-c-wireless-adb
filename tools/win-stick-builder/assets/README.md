@@ -11,8 +11,8 @@ A feature's checkbox is **greyed out until its asset is present**.
 | Wireless ADB | — | n/a | pure shell |
 | Animation scale | — | n/a | pure shell |
 | Read-only backup | — | n/a | pure shell |
-| Steering-wheel fix | `steering.sh` | ✅ | edit if your keycodes differ (`docs/04`) |
-| Seat-preset fix | `seatfix.sh` | ✅ | `pm clear` the vehicle-settings app, then reboot |
+| Steering-wheel fix (v6: tap/hold) | `steering.sh` | ✅ | tap next/prev/play, hold = seek + assistant; edit if your keycodes differ (`docs/04`) |
+| Seat-preset fix | `seatfix.sh` | ✅ | ⚠️ risky/unverified: `pm clear` may wipe ALL user settings; off by default (`docs/07`) |
 | Persistent root | `adbd_root`, `geelysu`, `geelysu.allow`, `rootadb.sh` | ✅ | **binaries are built for one specific firmware** (see below). `su` is made from `geelysu`. |
 | Settings shortcut | `Settings_1.0.apk` | ❌ | third-party — add it yourself (`docs/09`) |
 | Extra APKs | `apps/*.apk` | ❌ | your own APKs |
