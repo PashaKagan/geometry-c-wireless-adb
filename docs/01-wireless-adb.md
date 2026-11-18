@@ -135,3 +135,7 @@ adb shell settings put global animator_duration_scale 0.5
 A `shell`-user limitation worth knowing: the ADB shell **cannot write `/sdcard`** on this unit —
 use `/data/local/tmp` for scratch files. The toolbox is minimal (no `head`, `pidof`, `wc`,
 `printf`); parse output on the client side.
+
+For the full set of **final, copy-paste command blocks** — steering v6, persistent wireless ADB,
+animations, Settings, app install/disable, the seat fix, root recipes and diagnostics — see
+**[doc 10: Terminal recipes](10-terminal-recipes.md)**.
