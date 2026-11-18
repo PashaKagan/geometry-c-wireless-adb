@@ -54,6 +54,7 @@ numbers as *this build's*, and verify before relying on them.
 7. **[Community tweaks](docs/07-community-tweaks.md)** — Settings shortcut, engineering-menu audio warning, firmware-swap caveat, OBD2, regen macro.
 8. **[Geely Remote phone app](docs/08-geely-remote-app.md)** — the companion Android app that drives the unit over wireless ADB.
 9. **[Recommended apps](docs/09-recommended-apps.md)** — where to get the useful apps (APKPure / Play / source), with Android-5.1 version guidance.
+10. **[Terminal recipes](docs/10-terminal-recipes.md)** — final copy-paste command blocks for every fix (steering v6, wireless ADB, animations, Settings, apps, seat fix, diagnostics) once the stick has been run once.
 
 ## Tools & apps in this repo
 
