@@ -21,7 +21,9 @@ noted. Credit to those communities for the originals.
 ## Steering-wheel media buttons
 
 See [doc 4](04-wheel-buttons.md) — the next/prev/play buttons **can** be made to work in projection
-apps via a small log-tailing daemon. (Earlier community wisdom said impossible; it isn't.)
+apps via a small log-tailing daemon, with **tap vs hold**: tap = next/prev/play-pause, hold
+fwd/back = continuous fast-forward/rewind (in apps that honour media seek), hold play = the phone's
+voice assistant (Gemini) in Android Auto. (Earlier community wisdom said impossible; it isn't.)
 
 ## Audio (engineering menu) — ⚠️ caution
 
@@ -63,8 +65,12 @@ features — don't reflash region firmware without a same-region image.
 - **Front parking-sensor beep** on trims that ship without it — "not provided" in firmware.
 - **More power / range** — nothing to do with the head unit.
 
-## Seat-comfort preset corruption (theory, unverified)
+## Seat-comfort preset corruption (theory, unverified) — ⚠️ risky
 
 When the seat preset corrupts (otherwise a factory-reset-only fix), a **targeted `pm clear` of the
-vehicle-settings app** *may* reset just that state. Documented as worth trying, **not verified** — and
-`pm clear` wipes that app's whole state, so understand what you're clearing first.
+vehicle-settings app** (`pm clear com.neusoft.optimus.wheeljack.setting`, then reboot) *may* reset that
+state. **Not verified here**, and worse: a community report warns it **may wipe ALL of your user
+settings**, not just the seat preset. `pm clear` always erases that app's entire state. So treat this
+as a last resort only when the seat preset is already broken, expect to redo your other settings, and
+make sure you understand what you're clearing first. The stick builder's seat toggle carries the same
+warning and is off by default.
