@@ -18,14 +18,14 @@ and (now) using the unit's root. It speaks ADB directly from the phone via a ven
   (handy for remote diagnostics). Plus a one-tap **Get report**.
 - **App management** — list / launch / uninstall apps (including system apps), **install APK(s)**.
 - **Quick tweaks** — fast (light) animations, **seat-preset fix**, **ADB-persistence test**.
-- **Wheel-button fix** (legacy) — flips the source Bluetooth↔Music to make wheel buttons act on the
-  projection app. *Superseded by the native [steering daemon](04-wheel-buttons.md); kept as a
-  fallback.*
 - **Diagnostics** — capture a crash log, pull the newest Open Headunit logs, take a screenshot;
   screen **recording** is done by pulling `screencap` frames and encoding them on the phone (the
   unit's hardware screen-record is unusable).
 - **Log card** — copy all / save / clear, with timestamps. Files the app saves go to the phone's
   `Download/GeelyRemote/<type>/`.
+
+> Steering-wheel buttons are handled by the native system daemon (see [doc 4](04-wheel-buttons.md)),
+> not by this app. The app's role there is just the terminal you use to install or tweak that daemon.
 
 ## Why a custom app (and not just `adb`)
 
